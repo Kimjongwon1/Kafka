@@ -12,15 +12,16 @@
 ## 🧱 프로젝트 구조
 
 src/
-├── main/
-│ ├── java/com/example/kafka_chat/
-│ │ ├── controller/ # REST 컨트롤러
-│ │ ├── kafka/ # Producer, Consumer
-│ │ ├── model/ # ChatMessage Entity
-│ │ └── repository/ # Spring Data JPA
-│ └── resources/
-│ ├── templates/ # HTML (Thymeleaf)
-│ └── application.yml
+ └── main/
+     ├── java/
+     │   └── com/example/kafka_chat/
+     │       ├── controller/     # REST 컨트롤러
+     │       ├── kafka/          # Kafka Producer, Consumer
+     │       ├── model/          # ChatMessage 엔티티
+     │       └── repository/     # Spring Data JPA 리포지토리
+     └── resources/
+         ├── templates/          # HTML (Thymeleaf 템플릿)
+         └── application.yml     # 환경 설정 파일
 
 
 ---
