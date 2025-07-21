@@ -170,20 +170,20 @@ Host: http://localhost:8080
 
 내부적으로 ws://localhost:8080/ws/chat/websocket STOMP WebSocket 경로 사용
 
-🧪 2. REST API 메시지 전송 테스트
+🧪 2. api 메시지 전송 테스트
 bash
 복사
 편집
-locust -f rest_send_test.py
+locust -f locustfile_simple.py
 /api/chat/send API에 메시지를 POST 방식으로 전송
 
 Kafka Producer 트래픽 부하 측정용
 
-🧪 3. 메시지 이력 조회 테스트
+🧪 3. 카프카 테스트
 bash
 복사
 편집
-locust -f rest_read_test.py
+locust -f locustfile_kafka.py
 /api/chat/history?roomId=1 등 메시지 이력 조회 API 테스트
 
 DB Read (H2 쿼리 성능) 부하 측정
