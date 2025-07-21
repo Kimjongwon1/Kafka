@@ -121,7 +121,23 @@ Kafka 기반 채팅 프로젝트에 대해 3가지 부하 테스트 시나리오
 1. Python 설치
 공식 다운로드: https://www.python.org/downloads/windows/
 
+설치확인
+```
+python3 --version
+```
 설치 시 Add Python to PATH 체크
+pip 설치확인
+```
+pip3 --version
+```
+locust 설치
+```
+pip3 install locust
+```
+locust 확인
+```
+locust --version
+```
 
 2. 필수 패키지 설치
 bash
