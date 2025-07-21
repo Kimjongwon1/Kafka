@@ -128,14 +128,15 @@ bash
 복사
 편집
 pip install locust websocket-client
-📁 테스트 파일 구성
+<details> <summary><strong>📁 테스트 파일 구성</strong></summary>
 bash
 복사
 편집
 chat-load-test/
-├── websocket_test.py      # STOMP WebSocket 부하 테스트
-├── rest_send_test.py      # REST 메시지 전송 테스트
-└── rest_read_test.py      # 메시지 이력 조회 테스트
+├── websocket_test.py     # STOMP WebSocket 부하 테스트
+├── rest_send_test.py     # REST 메시지 전송 테스트
+└── rest_read_test.py     # 메시지 이력 조회 테스트
+</details>
 🚀 테스트 실행 방법
 🧪 1. WebSocket STOMP 테스트
 bash
