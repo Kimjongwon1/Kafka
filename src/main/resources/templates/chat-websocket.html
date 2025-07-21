@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>WebSocket 채팅</title>
+  <style>
+    body { font-family: sans-serif; padding: 2rem; background: #eef; }
+    form { margin-bottom: 1.5rem; }
+    input[type="text"] { padding: 0.5rem; margin-right: 0.5rem; }
+    .chat-box { background: white; border: 1px solid #ccc; padding: 1rem; max-width: 600px; }
+    .message { margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+    .timestamp { font-size: 0.85em; color: #999; }
+  </style>
+
+  <!-- JS: 반드시 head 안에 preload -->
+  <script src="https://cdn.jsdelivr.net/npm/sockjs-client@1.5.1/dist/sockjs.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/stompjs@2.3.3/lib/stomp.min.js"></script>
+</head>
+<body>
+<h1>WebSocket 실시간 채팅</h1>
+
+<form id="chatForm">
+  <input type="text" id="sender" placeholder="작성자" required>
+  <input type="text" id="content" placeholder="메시지 내용" required>
+  <button type="submit">전송</button>
+</form>
+
+<div class="chat-box" id="chatBox">
+  <div th:each="msg : ${messages}" class="message">
+    <div><strong th:text="${msg.sender}">작성자</strong>:</div>
+    <div th:text="${msg.content}">내용</div>
+    <div class="timestamp" th:text="${#temporals.format(msg.timestamp, 'yyyy-MM-dd HH:mm:ss')}">시간</div>
+  </div>
+</div>
+
+<script>
+  window.addEventListener('load', function () {
+    if (typeof Stomp === 'undefined') {
+      console.error("❌ Stomp is not defined — stomp.min.js가 로드되지 않았습니다.");
+      return;
+    }
+
+    const socket = new SockJS('/ws/chat');
+    const stompClient = Stomp.over(socket);
+    const chatBox = document.getElementById('chatBox');
+
+    stompClient.connect({}, function () {
+      console.log('✅ WebSocket 연결됨');
+
+      stompClient.subscribe('/topic/messages', function (message) {
+        const msg = JSON.parse(message.body);
+        const html = `
+          <div class="message">
+              <div><strong>${msg.sender}</strong>:</div>
+              <div>${msg.content}</div>
+              <div class="timestamp">${msg.timestamp.replace('T', ' ').substring(0, 19)}</div>
+          </div>`;
+        chatBox.innerHTML += html;
+      });
+    });
+
+    document.getElementById('chatForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      const sender = document.getElementById('sender').value;
+      const content = document.getElementById('content').value;
+
+      fetch('/api/send', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          sender: sender,
+          content: content
+        })
+      });
+
+      document.getElementById('content').value = '';
+    });
+  });
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>단순 채팅</title>
+</head>
+<body>
+<h1>단순 채팅</h1>
+
+<form action="/simple/send" method="post">
+  <input type="text" name="sender" placeholder="작성자" required>
+  <input type="text" name="content" placeholder="메시지" required>
+  <button type="submit">전송</button>
+</form>
+
+<hr>
+
+<div th:each="msg : ${messages}">
+  <p>
+    <strong th:text="${msg.sender}">작성자</strong> :
+    <span th:text="${msg.content}">내용</span>
+    <br>
+    <small th:text="${#temporals.format(msg.timestamp, 'yyyy-MM-dd HH:mm:ss')}">시간</small>
+  </p>
+</div>
+
+</body>
+</html>

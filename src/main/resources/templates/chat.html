@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Kafka 채팅 예제</title>
+    <style>
+        body { font-family: sans-serif; padding: 2rem; background: #f9f9f9; }
+        h1 { color: #444; }
+        form { margin-bottom: 1.5rem; }
+        input[type="text"] { padding: 0.5rem; margin-right: 0.5rem; }
+        .chat-box { background: white; border: 1px solid #ccc; padding: 1rem; max-width: 500px; }
+        .message { margin-bottom: 1rem; border-bottom: 1px solid #eee; padding-bottom: 0.5rem; }
+        .timestamp { font-size: 0.85em; color: #999; }
+    </style>
+</head>
+<body>
+<h1>Kafka 채팅 예제</h1>
+
+<form action="/send" method="post">
+    <input type="text" name="sender" placeholder="작성자" required>
+    <input type="text" name="content" placeholder="메시지 내용" required>
+    <button type="submit">전송</button>
+</form>
+
+<div class="chat-box">
+    <div th:each="msg : ${messages}" class="message">
+        <div><strong th:text="${msg.sender}">작성자</strong>:</div>
+        <div th:text="${msg.content}">내용</div>
+        <div class="timestamp" th:text="${#temporals.format(msg.timestamp, 'yyyy-MM-dd HH:mm:ss')}">시간</div>
+    </div>
+</div>
+</body>
+</html>
