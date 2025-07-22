@@ -4,7 +4,6 @@ import Dlab.Kafka.kafka.ChatMessageProducer;
 import Dlab.Kafka.model.ChatMessage;
 import Dlab.Kafka.repository.ChatMessageRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -19,15 +18,14 @@ public class ChatController {
     private final ChatMessageProducer chatMessageProducer;
     private final ChatMessageRepository chatMessageRepository;
 
-    // 채팅 입력 페이지
     @GetMapping("/")
     public String chatPage(Model model) {
         List<ChatMessage> messages = chatMessageRepository.findAll();
         model.addAttribute("messages", messages);
-        return "chat"; // templates/chat.html 로 렌더링
+        return "chat";
     }
 
-    // 채팅 메시지 전송 (form 방식)
+    // HTTP 채팅 메시지 전송 (DB 저장만, 실시간 반영 안됨)
     @PostMapping("/send")
     public String sendMessage(@RequestParam String sender,
                               @RequestParam String content) {
@@ -37,11 +35,12 @@ public class ChatController {
                 .timestamp(LocalDateTime.now())
                 .build();
 
-        chatMessageProducer.sendMessage(message);
+        // HTTP 전용 topic으로 전송
+        chatMessageProducer.sendHttpMessage(message);
         return "redirect:/";
     }
 
-    // (선택) JSON 방식 전송 API
+    // WebSocket 채팅 메시지 전송 (DB 저장 + 실시간 반영)
     @PostMapping("/api/send")
     @ResponseBody
     public String sendMessageApi(@RequestBody ChatMessage message) {
@@ -52,22 +51,16 @@ public class ChatController {
                     .timestamp(LocalDateTime.now())
                     .build();
         }
-        chatMessageProducer.sendMessage(message);
-        return "OK";
-    }
 
-    // (선택) 모든 메시지 조회 API
-    @GetMapping("/api/messages")
-    @ResponseBody
-    public List<ChatMessage> getMessages() {
-        return chatMessageRepository.findAll();
+        // WebSocket 전용 topic으로 전송
+        chatMessageProducer.sendWebSocketMessage(message);
+        return "OK";
     }
 
     @GetMapping("/websocket")
     public String websocketPage(Model model) {
         List<ChatMessage> messages = chatMessageRepository.findAll();
         model.addAttribute("messages", messages);
-        return "chat-websocket";  // templates/chat-websocket.html
+        return "chat-websocket";
     }
-
 }
