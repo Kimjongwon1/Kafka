@@ -62,13 +62,7 @@ dependencies {
 ### 1. Kafka 실행 (Docker 예시)
 
 ```bash
-docker run -d --name zookeeper -p 2181:2181 zookeeper
-
-docker run -d --name kafka -p 9092:9092 --link zookeeper \
-  -e KAFKA_ZOOKEEPER_CONNECT=zookeeper:2181 \
-  -e KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://localhost:9092 \
-  -e KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092 \
-  wurstmeister/kafka
+docker-compose up -d
 ```
 
 > 또는 로컬에 설치된 Kafka 사용
