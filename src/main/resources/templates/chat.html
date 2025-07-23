@@ -16,11 +16,27 @@
 <body>
 <h1>Kafka 채팅 예제</h1>
 
-<form action="/send" method="post">
+<form id="chatForm">
     <input type="text" name="sender" placeholder="작성자" required>
     <input type="text" name="content" placeholder="메시지 내용" required>
     <button type="submit">전송</button>
 </form>
+
+<script>
+document.getElementById('chatForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    const formData = new FormData(this);
+    
+    fetch('/send', {
+        method: 'POST',
+        body: formData
+    });
+    
+    // 폼 초기화
+    this.reset();
+});
+</script>
 
 <div class="chat-box">
     <div th:each="msg : ${messages}" class="message">

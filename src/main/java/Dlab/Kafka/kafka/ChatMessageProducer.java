@@ -30,7 +30,7 @@ public class ChatMessageProducer {
     }
 
     // 기존 메서드는 호환성을 위해 유지 (WebSocket으로 처리)
-    public void sendMessage(ChatMessage message) {
-        sendWebSocketMessage(message);
-    }
+//    public void sendMessage(ChatMessage message) {
+//        sendWebSocketMessage(message);
+//    }
 }

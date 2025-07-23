@@ -27,6 +27,7 @@ public class ChatController {
 
     // HTTP 채팅 메시지 전송 (DB 저장만, 실시간 반영 안됨)
     @PostMapping("/send")
+    @ResponseBody
     public String sendMessage(@RequestParam String sender,
                               @RequestParam String content) {
         ChatMessage message = ChatMessage.builder()
@@ -37,7 +38,7 @@ public class ChatController {
 
         // HTTP 전용 topic으로 전송
         chatMessageProducer.sendHttpMessage(message);
-        return "redirect:/";
+        return "OK";
     }
 
     // WebSocket 채팅 메시지 전송 (DB 저장 + 실시간 반영)
