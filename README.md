@@ -60,7 +60,7 @@ dependencies {
 ## 🛠 실행 방법
 
 ### 1. Kafka 실행 (Docker 예시)
-
+해당 디렉토리로 가서
 ```bash
 docker-compose up -d
 ```
